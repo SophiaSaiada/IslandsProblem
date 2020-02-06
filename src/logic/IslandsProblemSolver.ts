@@ -1,14 +1,20 @@
 import { Board } from "../types/Board";
 import _ from "lodash";
 
-function findNumOfIslands (originalBoard: Board): [Board, number] {
+async function findNumOfIslands(
+  originalBoard: Board,
+  sideEffect: (board: Board) => void,
+  sleep: () => void
+): Promise<number> {
   const board = originalBoard.clone();
   let nextIslandId = 2;
 
-  board.forEachCell((rowIndex, columnIndex, currentValue) => {
+  await board.asyncForEachCell(async (rowIndex, columnIndex, currentValue) => {
     if (currentValue === 0) {
       return;
     }
+
+    await sleep();
 
     if (currentValue === 1) {
       const nonZeroNeighbors = getNonZeroNeighbors(
@@ -23,36 +29,47 @@ function findNumOfIslands (originalBoard: Board): [Board, number] {
       );
       if (visitedNonZeroNeighbors.length === 0) {
         board.setCell(rowIndex, columnIndex, nextIslandId);
-        nonZeroNeighbors.forEach(([neighborColumnIndex, neighborRowIndex]) => {
-          board.setCell(neighborRowIndex, neighborColumnIndex, nextIslandId);
-        });
+        await nonZeroNeighbors.forEach(
+          async ([neighborColumnIndex, neighborRowIndex]) => {
+            board.setCell(neighborRowIndex, neighborColumnIndex, nextIslandId);
+            sideEffect(board);
+            await sleep();
+          }
+        );
         nextIslandId++;
       }
     }
 
     if (currentValue > 1) {
-      getNonZeroNeighbors(board, rowIndex, columnIndex).forEach(
-        ([neighborColumnIndex, neighborRowIndex]) => {
+      await getNonZeroNeighbors(board, rowIndex, columnIndex).forEach(
+        async ([neighborColumnIndex, neighborRowIndex]) => {
           board.setCell(neighborRowIndex, neighborColumnIndex, currentValue);
+          sideEffect(board);
+          await sleep();
         }
       );
     }
   });
 
-  mergeIdenticalIslands(board, nextIslandId - 1);
+  mergeIdenticalIslands(board, nextIslandId - 1, sideEffect, sleep);
 
-  return [board, numOfIslands(board)];
-};
+  return Promise.resolve(numOfIslands(board));
+}
 
 const numOfIslands = (board: Board) => {
   const islands = new Set<number>();
-  board.forEachCell((_, __, currentValue) => {
+  board.asyncForEachCell((_, __, currentValue) => {
     if (currentValue > 1) islands.add(currentValue);
   });
   return islands.size;
 };
 
-const mergeIdenticalIslands = (board: Board, lastIslandId: number) => {
+async function mergeIdenticalIslands(
+  board: Board,
+  lastIslandId: number,
+  sideEffect: (board: Board) => void,
+  sleep: () => void
+) {
   let islandIdToIndices = Object.fromEntries(
     _.range(2, lastIslandId + 1).map(islandId => [
       islandId,
@@ -64,7 +81,7 @@ const mergeIdenticalIslands = (board: Board, lastIslandId: number) => {
       islandIdToIndices[currentValue].push([rowIndex, columnIndex]);
   });
 
-  board.forEachCell((rowIndex, columnIndex, currentValue) => {
+  await board.asyncForEachCell(async (rowIndex, columnIndex, currentValue) => {
     if (currentValue === 0) {
       return;
     }
@@ -74,16 +91,20 @@ const mergeIdenticalIslands = (board: Board, lastIslandId: number) => {
       ([neighborColumnIndex, neighborRowIndex]) =>
         board.getCell(neighborRowIndex, neighborColumnIndex)
     );
-    identicalIslands
+    await identicalIslands
       .filter(islandId => islandId != currentValue)
-      .forEach(islandId => {
-        islandIdToIndices[islandId].forEach(([rowIndex, columnIndex]) => {
-          islandIdToIndices[currentValue].push([rowIndex, columnIndex]);
-          board.setCell(rowIndex, columnIndex, currentValue);
-        });
+      .forEach(async islandId => {
+        await islandIdToIndices[islandId].forEach(
+          async ([rowIndex, columnIndex]) => {
+            islandIdToIndices[currentValue].push([rowIndex, columnIndex]);
+            board.setCell(rowIndex, columnIndex, currentValue);
+            sideEffect(board);
+            await sleep();
+          }
+        );
       });
   });
-};
+}
 
 const getNeighborIndices = (
   board: Board,

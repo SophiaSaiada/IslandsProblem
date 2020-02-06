@@ -68,4 +68,22 @@ export class Board {
       }
     }
   }
+
+  async asyncForEachCell(
+    callback: (rowIndex: number, columnIndex: number, value: number) => void
+  ) {
+    for (let rowIndex = 0; rowIndex < this.dimensions.height; rowIndex++) {
+      for (
+        let columnIndex = 0;
+        columnIndex < this.dimensions.width;
+        columnIndex++
+      ) {
+        await callback(
+          rowIndex,
+          columnIndex,
+          this.getCell(rowIndex, columnIndex)
+        );
+      }
+    }
+  }
 }
