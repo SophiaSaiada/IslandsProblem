@@ -9,7 +9,7 @@ const SolverPage = ({ originalBoard }: SolverPageProps) => {
   const [ongoingBoard, setOgnoingBoard] = useState(originalBoard.clone());
   const [answer, setAnswer] = useState<number | null>(null);
   const solve = () => {
-    setAnswer(findNumOfIslands(originalBoard));
+    setOgnoingBoard(findNumOfIslands(originalBoard));
   };
   return (
     <div>
