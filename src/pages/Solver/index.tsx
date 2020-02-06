@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Board } from "../../types/Board";
 import findNumOfIslands from "../../logic/IslandsProblemSolver";
 import { sleep } from "../../logic/utils";
+import BoardVisualizer from "./BoardVisualizer";
 type SolverPageProps = {
   originalBoard: Board;
 };
@@ -22,7 +23,7 @@ const SolverPage = ({ originalBoard }: SolverPageProps) => {
   };
   return (
     <div>
-      <pre>{ongoingBoard.toString()}</pre>
+      <BoardVisualizer board={ongoingBoard}/>
       <br />
       <button onClick={solve}>Solve</button>
       <br />
