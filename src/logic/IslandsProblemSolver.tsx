@@ -1,7 +1,7 @@
 import { Board } from "../types/Board";
 import _ from "lodash";
 
-const findNumOfIslands = (originalBoard: Board) => {
+function findNumOfIslands (originalBoard: Board): [Board, number] {
   const board = originalBoard.clone();
   let nextIslandId = 2;
 
@@ -41,7 +41,15 @@ const findNumOfIslands = (originalBoard: Board) => {
 
   mergeIdenticalIslands(board, nextIslandId - 1);
 
-  return board;
+  return [board, numOfIslands(board)];
+};
+
+const numOfIslands = (board: Board) => {
+  const islands = new Set<number>();
+  board.forEachCell((_, __, currentValue) => {
+    if (currentValue > 1) islands.add(currentValue);
+  });
+  return islands.size;
 };
 
 const mergeIdenticalIslands = (board: Board, lastIslandId: number) => {
