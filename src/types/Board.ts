@@ -12,4 +12,11 @@ export class Board {
   toString(): String {
     return this.data.map(row => row.join("\t")).join("\n");
   }
+
+  clone(): Board {
+    return new Board(
+      { ...this.dimensions },
+      this.data.map(row => [...row])
+    );
+  }
 }
