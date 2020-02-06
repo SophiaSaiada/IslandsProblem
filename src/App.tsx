@@ -1,24 +1,16 @@
-import React from 'react';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { Board } from "./types/Board";
+import BoardBuildPage from "./pages/BoardBuildPage";
 
 const App = () => {
+  const [board, setBoard] = useState<Board | null>(null);
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {board == null && <BoardBuildPage setBoard={setBoard} />}
+      {board != null && <pre>{board.toString()}</pre>}
     </div>
   );
-}
+};
 
 export default App;
