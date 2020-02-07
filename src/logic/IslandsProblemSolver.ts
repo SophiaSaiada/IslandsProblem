@@ -93,7 +93,7 @@ async function mergeIdenticalIslands(
         board.getCell(neighborRowIndex, neighborColumnIndex)
     );
     await identicalIslands
-      .filter(islandId => islandId != currentValue)
+      .filter(islandId => islandId !== currentValue)
       .forEach(async islandId => {
         await islandIdToIndices[islandId].forEach(
           async ([rowIndex, columnIndex]) => {

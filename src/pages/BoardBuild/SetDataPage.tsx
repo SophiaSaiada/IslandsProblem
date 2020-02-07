@@ -80,7 +80,7 @@ const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
                     className={classes.islandPaper}
                     style={{
                       backgroundColor:
-                        value == 0 ? lightBlue[200] : orange[200],
+                        value === 0 ? lightBlue[200] : orange[200],
                       transition: "background-color .2s ease"
                     }}
                     elevation={2}

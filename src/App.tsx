@@ -13,7 +13,9 @@ const App = () => {
     <ThemeProvider theme={customTheme}>
       <div className={`App`}>
         {board == null && <BoardBuildPage setBoard={setBoard} />}
-        {board != null && <SolverPage originalBoard={board} />}
+        {board != null && (
+          <SolverPage originalBoard={board} goHome={() => setBoard(null)} />
+        )}
       </div>
     </ThemeProvider>
   );

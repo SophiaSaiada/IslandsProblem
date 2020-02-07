@@ -46,7 +46,7 @@ const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
                 key={`${columnIndex},${rowIndex}`}
                 className={classes.islandPaper}
                 style={{
-                  backgroundColor: value == 0 ? lightBlue[200] : orange[200]
+                  backgroundColor: value === 0 ? lightBlue[200] : orange[200]
                 }}
                 elevation={2}
               >

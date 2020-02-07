@@ -6,9 +6,10 @@ import BoardVisualizer from "./BoardVisualizer";
 import { Box, Button, Snackbar } from "@material-ui/core";
 type SolverPageProps = {
   originalBoard: Board;
+  goHome: () => void;
 };
 
-const SolverPage = ({ originalBoard }: SolverPageProps) => {
+const SolverPage = ({ originalBoard, goHome }: SolverPageProps) => {
   const [[ongoingBoard, ongoingBoardId], setOgnoingBoardAndId] = useState<
     [Board, number]
   >([originalBoard.clone(), 0]);
@@ -28,15 +29,20 @@ const SolverPage = ({ originalBoard }: SolverPageProps) => {
   };
 
   const snackbarMessage =
-    answer == 0
+    answer === 0
       ? "There are'nt islands."
-      : answer == 1
+      : answer === 1
       ? "There is a single island."
       : `There are ${answer} islands.`;
 
   return (
     <Box>
       <BoardVisualizer board={ongoingBoard} />
+      <Box component="span" mt={2}>
+        <Button variant="contained" onClick={goHome}>
+          Go Home
+        </Button>
+      </Box>
       <Box component="span" mt={2} ml={2}>
         <Button variant="contained" color="primary" onClick={solve}>
           Solve
