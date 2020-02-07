@@ -1,35 +1,22 @@
 import React, { useState } from "react";
 import { Dimensions } from "../../types/Dimensions";
 import _ from "lodash";
-import { makeStyles, ButtonBase, Button, Paper, Box } from "@material-ui/core";
+import {
+  makeStyles,
+  ButtonBase,
+  Button,
+  Paper,
+  Box,
+  Typography
+} from "@material-ui/core";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import orange from "@material-ui/core/colors/orange";
+import { useStyles } from "../Solver/BoardVisualizer";
 
 type SetDataPageProps = {
   boardDim: Dimensions;
   setBoardData: (data: number[][]) => void;
 };
-
-const useStyles = makeStyles(_ => ({
-  grid: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-    margin: ".15em 0",
-    justifyContent: "center"
-  },
-  islandPaper: {
-    height: "1em",
-    width: "1em",
-    lineHeight: "1em",
-    padding: ".4em",
-    fontSize: ".8em",
-    margin: "0 .15em"
-  }
-}));
 
 const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
   const classes = useStyles();
@@ -85,7 +72,7 @@ const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
                     }}
                     elevation={2}
                   >
-                    {value}
+                    <Typography>{value}</Typography>
                   </Paper>
                 </ButtonBase>
               );
