@@ -9,7 +9,10 @@ type BoardBuildPageProps = {
 };
 
 const BoardBuildPage = ({ setBoard }: BoardBuildPageProps) => {
-  const [dimensions, setDimensions] = useState<Dimensions | null>(null);
+  const [dimensions, setDimensions] = useState<Dimensions | null>({
+    width: 10,
+    height: 10
+  });
 
   const setBoardDataAndSubmit = (newData: number[][]) => {
     if (dimensions == null) return;
@@ -19,7 +22,9 @@ const BoardBuildPage = ({ setBoard }: BoardBuildPageProps) => {
 
   return (
     <div className="App">
-      <ChooseDimenssionPage setBoardDim={setDimensions} />
+      {dimensions == null && (
+        <ChooseDimenssionPage setBoardDim={setDimensions} />
+      )}
       {dimensions != null && (
         <SetDataPage
           boardDim={dimensions}

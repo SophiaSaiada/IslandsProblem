@@ -3,12 +3,14 @@ import { Board } from "../../types/Board";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import lightBlue from "@material-ui/core/colors/lightBlue";
+import orange from "@material-ui/core/colors/orange";
 
 type BoardVisualizerProps = {
   board: Board;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(_ => ({
   grid: {
     display: "inline-flex",
     flexDirection: "column"
@@ -34,16 +36,22 @@ const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
   return (
     <div className={classes.grid}>
       {_.range(0, board.dimensions.height).map(rowIndex => (
-        <div className={classes.row}>
-          {_.range(0, board.dimensions.width).map(columnIndex => (
-            <Paper
-              key={`${columnIndex},${rowIndex}`}
-              className={classes.islandPaper}
-              elevation={2}
-            >
-              {board.getCell(rowIndex, columnIndex)}
-            </Paper>
-          ))}
+        <div className={classes.row} key={rowIndex}>
+          {_.range(0, board.dimensions.width).map(columnIndex => {
+            const value = board.getCell(rowIndex, columnIndex);
+            return (
+              <Paper
+                key={`${columnIndex},${rowIndex}`}
+                className={classes.islandPaper}
+                style={{
+                  backgroundColor: value == 0 ? lightBlue[200] : orange[200]
+                }}
+                elevation={2}
+              >
+                {board.getCell(rowIndex, columnIndex)}
+              </Paper>
+            );
+          })}
         </div>
       ))}
     </div>

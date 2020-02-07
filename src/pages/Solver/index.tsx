@@ -18,7 +18,7 @@ const SolverPage = ({ originalBoard }: SolverPageProps) => {
       (board: Board) => {
         setOgnoingBoardAndId([board, (ongoingBoardId + 1) % 4]);
       },
-      () => sleep(200)
+      () => sleep(250)
     ).then(setAnswer);
   };
   return (
