@@ -51,16 +51,17 @@ async function findNumOfIslands(
     }
   });
 
-  mergeIdenticalIslands(board, nextIslandId - 1, sideEffect, sleep);
+  await mergeIdenticalIslands(board, nextIslandId - 1, sideEffect, sleep);
 
   return Promise.resolve(numOfIslands(board));
 }
 
 const numOfIslands = (board: Board) => {
   const islands = new Set<number>();
-  board.asyncForEachCell((_, __, currentValue) => {
+  board.forEachCell((_, __, currentValue) => {
     if (currentValue > 1) islands.add(currentValue);
   });
+  
   return islands.size;
 };
 

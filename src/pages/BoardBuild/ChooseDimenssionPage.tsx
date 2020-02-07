@@ -1,25 +1,62 @@
 import React, { useState } from "react";
 import { Dimensions } from "../../types/Dimensions";
+import { TextField, Button, makeStyles, Box } from "@material-ui/core";
 
 type ChooseDimenssionPageProps = {
   setBoardDim: (dimensions: Dimensions) => void;
 };
 
+const useStyles = makeStyles(_ => ({
+  dimensionsConatiner: {
+    display: "inline-flex",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  crossSign: {
+    fontSize: "1.5em",
+    margin: "0 .5em"
+  }
+}));
+
 const ChooseDimenssionPage = ({ setBoardDim }: ChooseDimenssionPageProps) => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const classes = useStyles();
+
+  const [width, setWidth] = useState(8);
+  const [height, setHeight] = useState(8);
   const chooseDimenssion = () => {
     setBoardDim({ width, height });
   };
   return (
-    <div>
-      <input type="number" onChange={e => setWidth(parseInt(e.target.value))} />
-      <input
-        type="number"
-        onChange={e => setHeight(parseInt(e.target.value))}
-      />
-      <button onClick={_ => chooseDimenssion()}>Choose</button>
-    </div>
+    <form>
+      <div className={classes.dimensionsConatiner}>
+        <TextField
+          id="filled-basic"
+          label="Width"
+          variant="filled"
+          type="number"
+          defaultValue={8}
+          onChange={e => setWidth(parseInt(e.target.value))}
+        />
+        <div className={classes.crossSign}>×</div>
+        <TextField
+          id="filled-basic"
+          label="Height"
+          variant="filled"
+          type="number"
+          defaultValue={8}
+          onChange={e => setHeight(parseInt(e.target.value))}
+        />
+      </div>
+      <Box m={3}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={_ => chooseDimenssion()}
+        >
+          Choose
+        </Button>
+      </Box>
+    </form>
   );
 };
 

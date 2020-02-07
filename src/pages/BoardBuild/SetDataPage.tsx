@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dimensions } from "../../types/Dimensions";
 import _ from "lodash";
-import { makeStyles, ButtonBase, Paper } from "@material-ui/core";
+import { makeStyles, ButtonBase, Button, Paper, Box } from "@material-ui/core";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import orange from "@material-ui/core/colors/orange";
 
@@ -12,13 +12,14 @@ type SetDataPageProps = {
 
 const useStyles = makeStyles(_ => ({
   grid: {
-    display: "inline-flex",
+    display: "flex",
     flexDirection: "column"
   },
   row: {
     display: "flex",
     flexDirection: "row",
-    margin: ".15em 0"
+    margin: ".15em 0",
+    justifyContent: "center"
   },
   islandPaper: {
     height: "1em",
@@ -63,7 +64,7 @@ const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
 
   return (
     <div>
-      <div className={classes.grid}>
+      <Box className={classes.grid} mb={2}>
         {_.range(boardDim.height).map(rowIndex => (
           <div className={classes.row} key={rowIndex}>
             {_.range(boardDim.width).map(columnIndex => {
@@ -78,7 +79,8 @@ const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
                   <Paper
                     className={classes.islandPaper}
                     style={{
-                      backgroundColor: value == 0 ? lightBlue[200] : orange[200],
+                      backgroundColor:
+                        value == 0 ? lightBlue[200] : orange[200],
                       transition: "background-color .2s ease"
                     }}
                     elevation={2}
@@ -90,10 +92,19 @@ const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
             })}
           </div>
         ))}
-      </div>
-      <br />
-      <button onClick={_ => randomize()}>Rnadomize</button>
-      <button onClick={_ => submit()}>Set Data</button>
+      </Box>
+
+      <Box component="span" mt={2}>
+        <Button variant="contained" onClick={_ => randomize()}>
+          Randomize
+        </Button>
+      </Box>
+
+      <Box component="span" mt={2} ml={2}>
+        <Button variant="contained" color="primary" onClick={_ => submit()}>
+          Set
+        </Button>
+      </Box>
     </div>
   );
 };
