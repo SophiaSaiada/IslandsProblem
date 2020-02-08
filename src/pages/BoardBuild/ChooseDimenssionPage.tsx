@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Dimensions } from "../../types/Dimensions";
-import { TextField, Button, makeStyles, Box } from "@material-ui/core";
+import { TextField, Button, makeStyles, Box, Typography } from "@material-ui/core";
 
 type ChooseDimenssionPageProps = {
   setBoardDim: (dimensions: Dimensions) => void;
@@ -28,6 +28,11 @@ const ChooseDimenssionPage = ({ setBoardDim }: ChooseDimenssionPageProps) => {
   };
   return (
     <form>
+      <Box mb={2}>
+        <Typography>
+          Please enter bitmap size:
+        </Typography>
+      </Box>
       <div className={classes.dimensionsConatiner}>
         <TextField
           id="filled-basic"
