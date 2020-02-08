@@ -25,6 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://sophiasa.dev/IslandsProblem",
   "eslintConfig": {
     "extends": "react-app"
   },
