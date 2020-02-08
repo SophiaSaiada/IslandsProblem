@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState } from "react";
 import { Dimensions } from "../../types/Dimensions";
 import _ from "lodash";
 import { Button, Box } from "@material-ui/core";

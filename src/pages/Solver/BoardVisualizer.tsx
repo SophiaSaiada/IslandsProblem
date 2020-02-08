@@ -1,9 +1,8 @@
 import React, { forwardRef } from "react";
 import { Board } from "../../types/Board";
-import _ from "lodash";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import orange from "@material-ui/core/colors/orange";
-import { makeStyles, ButtonBase, Paper } from "@material-ui/core";
+import { makeStyles, Paper } from "@material-ui/core";
 import { FixedSizeGrid as Grid } from "react-window";
 
 type BoardVisualizerProps = {
