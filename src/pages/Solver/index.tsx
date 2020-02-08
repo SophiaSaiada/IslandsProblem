@@ -16,12 +16,25 @@ const SolverPage = ({ originalBoard, goHome }: SolverPageProps) => {
   const [answer, setAnswer] = useState<number | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const solve = () => {
+    const quickRun =
+      originalBoard.dimensions.height * originalBoard.dimensions.width > 800;
+      
+    const sleepLength =
+      originalBoard.dimensions.height * originalBoard.dimensions.width > 400
+        ? 10
+        : originalBoard.dimensions.height * originalBoard.dimensions.width > 200
+        ? 20
+        : originalBoard.dimensions.height * originalBoard.dimensions.width > 100
+        ? 40
+        : 100;
+
     findNumOfIslands(
       originalBoard,
       (board: Board) => {
         setOgnoingBoardAndId([board, (ongoingBoardId + 1) % 4]);
       },
-      () => sleep(100)
+      quickRun,
+      () => sleep(sleepLength)
     ).then(answer => {
       setAnswer(answer);
       setSnackbarOpen(true);
@@ -36,8 +49,11 @@ const SolverPage = ({ originalBoard, goHome }: SolverPageProps) => {
       : `There are ${answer} islands.`;
 
   return (
-    <Box>
-      <BoardVisualizer board={ongoingBoard} />
+    <div>
+      <Box mb={2}>
+        <BoardVisualizer board={ongoingBoard} />
+      </Box>
+
       <Box component="span" mt={2}>
         <Button variant="contained" onClick={goHome}>
           Go Home
@@ -69,7 +85,7 @@ const SolverPage = ({ originalBoard, goHome }: SolverPageProps) => {
           </React.Fragment>
         }
       />
-    </Box>
+    </div>
   );
 };
 

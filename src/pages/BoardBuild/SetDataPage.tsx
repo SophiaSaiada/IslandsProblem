@@ -1,17 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { Dimensions } from "../../types/Dimensions";
 import _ from "lodash";
-import {
-  makeStyles,
-  ButtonBase,
-  Button,
-  Paper,
-  Box,
-  Typography
-} from "@material-ui/core";
-import lightBlue from "@material-ui/core/colors/lightBlue";
-import orange from "@material-ui/core/colors/orange";
-import { useStyles } from "../Solver/BoardVisualizer";
+import { Button, Box } from "@material-ui/core";
+import BoardEditor from "./BoardEditor";
 
 type SetDataPageProps = {
   boardDim: Dimensions;
@@ -19,8 +10,6 @@ type SetDataPageProps = {
 };
 
 const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
-  const classes = useStyles();
-
   const [data, setData] = useState(
     _.range(boardDim.height).map(__ => _.range(boardDim.width).map(__ => 0))
   );
@@ -51,34 +40,8 @@ const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
 
   return (
     <div>
-      <Box className={classes.grid} mb={2}>
-        {_.range(boardDim.height).map(rowIndex => (
-          <div className={classes.row} key={rowIndex}>
-            {_.range(boardDim.width).map(columnIndex => {
-              const value = data[rowIndex][columnIndex];
-              return (
-                <ButtonBase
-                  focusRipple
-                  key={`${columnIndex},${rowIndex}`}
-                  onClick={_ => toggleCell(rowIndex, columnIndex)}
-                  style={{ font: "unset" }}
-                >
-                  <Paper
-                    className={classes.islandPaper}
-                    style={{
-                      backgroundColor:
-                        value === 0 ? lightBlue[200] : orange[200],
-                      transition: "background-color .2s ease"
-                    }}
-                    elevation={2}
-                  >
-                    <Typography>{value}</Typography>
-                  </Paper>
-                </ButtonBase>
-              );
-            })}
-          </div>
-        ))}
+      <Box mb={2}>
+        <BoardEditor boardDim={boardDim} data={data} toggleCell={toggleCell} />
       </Box>
 
       <Box component="span" mt={2}>

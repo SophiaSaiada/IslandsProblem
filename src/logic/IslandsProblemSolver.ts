@@ -4,7 +4,8 @@ import _ from "lodash";
 async function findNumOfIslands(
   originalBoard: Board,
   sideEffect: (board: Board) => void,
-  sleep: () => void
+  quickRun: boolean,
+  sleep: () => Promise<any>
 ): Promise<number> {
   const board = originalBoard.clone();
   let nextIslandId = 2;
@@ -14,7 +15,7 @@ async function findNumOfIslands(
       return;
     }
 
-    await sleep();
+    if (!quickRun) await sleep();
 
     if (currentValue === 1) {
       const nonZeroNeighbors = getNonZeroNeighbors(
@@ -32,8 +33,10 @@ async function findNumOfIslands(
         await nonZeroNeighbors.forEach(
           async ([neighborColumnIndex, neighborRowIndex]) => {
             board.setCell(neighborRowIndex, neighborColumnIndex, nextIslandId);
-            sideEffect(board);
-            await sleep();
+            if (!quickRun) {
+              sideEffect(board);
+              await sleep();
+            }
           }
         );
         nextIslandId++;
@@ -44,14 +47,26 @@ async function findNumOfIslands(
       await getNonZeroNeighbors(board, rowIndex, columnIndex).forEach(
         async ([neighborColumnIndex, neighborRowIndex]) => {
           board.setCell(neighborRowIndex, neighborColumnIndex, currentValue);
-          sideEffect(board);
-          await sleep();
+          if (!quickRun) {
+            sideEffect(board);
+            await sleep();
+          }
         }
       );
     }
   });
 
-  await mergeIdenticalIslands(board, nextIslandId - 1, sideEffect, sleep);
+  await mergeIdenticalIslands(
+    board,
+    nextIslandId - 1,
+    quickRun,
+    sideEffect,
+    sleep
+  );
+
+  if (quickRun) {
+    sideEffect(board);
+  }
 
   return Promise.resolve(numOfIslands(board));
 }
@@ -61,15 +76,16 @@ const numOfIslands = (board: Board) => {
   board.forEachCell((_, __, currentValue) => {
     if (currentValue > 1) islands.add(currentValue);
   });
-  
+
   return islands.size;
 };
 
 async function mergeIdenticalIslands(
   board: Board,
   lastIslandId: number,
+  quickRun: boolean,
   sideEffect: (board: Board) => void,
-  sleep: () => void
+  sleep: () => Promise<any>
 ) {
   let islandIdToIndices = Object.fromEntries(
     _.range(2, lastIslandId + 1).map(islandId => [
@@ -99,8 +115,10 @@ async function mergeIdenticalIslands(
           async ([rowIndex, columnIndex]) => {
             islandIdToIndices[currentValue].push([rowIndex, columnIndex]);
             board.setCell(rowIndex, columnIndex, currentValue);
-            sideEffect(board);
-            await sleep();
+            if (!quickRun) {
+              sideEffect(board);
+              await sleep();
+            }
           }
         );
       });

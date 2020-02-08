@@ -5,9 +5,12 @@ import lightBlue from "@material-ui/core/colors/lightBlue";
 import orange from "@material-ui/core/colors/orange";
 import { makeStyles, ButtonBase, Paper } from "@material-ui/core";
 import { FixedSizeGrid as Grid } from "react-window";
+import { Dimensions } from "../../types/Dimensions";
 
-type BoardVisualizerProps = {
-  board: Board;
+type BoardEditorProps = {
+  boardDim: Dimensions;
+  data: number[][];
+  toggleCell: (rowIndex: number, clomunIndex: number) => void;
 };
 
 export const useStyles = makeStyles(_ => ({
@@ -55,24 +58,23 @@ const innerElementType = forwardRef((props: any, ref: any) => {
     />
   );
 });
-
-const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
+const BoardEditor = ({ boardDim, data, toggleCell }: BoardEditorProps) => {
   const classes = useStyles();
 
   const Cell = ({ columnIndex, rowIndex, style }: CellProps) => {
-    const value = board.data[rowIndex][columnIndex];
+    const value = data[rowIndex][columnIndex];
     return (
-      <div
-        key={`${columnIndex},${rowIndex}`}
+      <ButtonBase
+        focusRipple
         className={classes.islandPaperContainer}
+        key={`${columnIndex},${rowIndex}`}
+        onClick={_ => toggleCell(rowIndex, columnIndex)}
         style={{
           ...style,
           left: style.left + GUTTER_SIZE,
           top: style.top + GUTTER_SIZE,
           width: style.width - GUTTER_SIZE,
-          height: style.height - GUTTER_SIZE,
-          padding: 0,
-          margin: 0
+          height: style.height - GUTTER_SIZE
         }}
       >
         <Paper
@@ -85,25 +87,19 @@ const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
         >
           {value}
         </Paper>
-      </div>
+      </ButtonBase>
     );
   };
 
   return (
     <div className={classes.gridContainer}>
       <Grid
-        columnCount={board.dimensions.width}
-        rowCount={board.dimensions.height}
+        columnCount={boardDim.width}
+        rowCount={boardDim.height}
         columnWidth={32 + GUTTER_SIZE * 2}
         rowHeight={32 + GUTTER_SIZE * 2}
-        height={Math.min(
-          board.dimensions.height * (32 + GUTTER_SIZE * 2) + 20,
-          400
-        )}
-        width={Math.min(
-          board.dimensions.width * (32 + GUTTER_SIZE * 2) + 20,
-          400
-        )}
+        height={Math.min(boardDim.height * (32 + GUTTER_SIZE * 2) + 20, 400)}
+        width={Math.min(boardDim.width * (32 + GUTTER_SIZE * 2) + 20, 400)}
         innerElementType={innerElementType}
       >
         {Cell}
@@ -112,4 +108,4 @@ const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
   );
 };
 
-export default BoardVisualizer;
+export default BoardEditor;
