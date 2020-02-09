@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "20418a63937ac03966410fef5d163953",
+    "revision": "0e0a421862cb013dbf107c8cd12aab9c",
     "url": "/IslandsProblem/index.html"
   },
   {
-    "revision": "1930932feb392de85dbd",
+    "revision": "35ee085aaca3a991d04e",
     "url": "/IslandsProblem/static/css/main.7e05891e.chunk.css"
   },
   {
-    "revision": "8b7c688fd62a35d5258f",
-    "url": "/IslandsProblem/static/js/2.d1f507a3.chunk.js"
+    "revision": "12de9753f734a449ee4e",
+    "url": "/IslandsProblem/static/js/2.e4cdd3bc.chunk.js"
   },
   {
     "revision": "9c7e6cca0df3be74c612f63119a9d27d",
-    "url": "/IslandsProblem/static/js/2.d1f507a3.chunk.js.LICENSE.txt"
+    "url": "/IslandsProblem/static/js/2.e4cdd3bc.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "1930932feb392de85dbd",
-    "url": "/IslandsProblem/static/js/main.a60adb82.chunk.js"
+    "revision": "35ee085aaca3a991d04e",
+    "url": "/IslandsProblem/static/js/main.aa8ba34f.chunk.js"
   },
   {
     "revision": "3046c76c6d7999ead579",
