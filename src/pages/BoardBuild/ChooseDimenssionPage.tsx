@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Dimensions } from "../../types/Dimensions";
-import { TextField, Button, makeStyles, Box, Typography } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  makeStyles,
+  Box,
+  Typography
+} from "@material-ui/core";
 
 type ChooseDimenssionPageProps = {
   setBoardDim: (dimensions: Dimensions) => void;
@@ -21,34 +27,31 @@ const useStyles = makeStyles(_ => ({
 const ChooseDimenssionPage = ({ setBoardDim }: ChooseDimenssionPageProps) => {
   const classes = useStyles();
 
-  const [width, setWidth] = useState(8);
-  const [height, setHeight] = useState(8);
+  const DEFAULT_DIM = 8;
+  const [width, setWidth] = useState(DEFAULT_DIM);
+  const [height, setHeight] = useState(DEFAULT_DIM);
   const chooseDimenssion = () => {
     setBoardDim({ width, height });
   };
   return (
     <form>
       <Box mb={2}>
-        <Typography>
-          Please enter bitmap size:
-        </Typography>
+        <Typography>Please enter bitmap size:</Typography>
       </Box>
       <div className={classes.dimensionsConatiner}>
         <TextField
-          id="filled-basic"
           label="Width"
           variant="filled"
           type="number"
-          defaultValue={8}
+          defaultValue={DEFAULT_DIM}
           onChange={e => setWidth(parseInt(e.target.value))}
         />
         <div className={classes.crossSign}>×</div>
         <TextField
-          id="filled-basic"
           label="Height"
           variant="filled"
           type="number"
-          defaultValue={8}
+          defaultValue={DEFAULT_DIM}
           onChange={e => setHeight(parseInt(e.target.value))}
         />
       </div>
