@@ -44,6 +44,7 @@ const ChooseDimenssionPage = ({ setBoardDim }: ChooseDimenssionPageProps) => {
           variant="filled"
           type="number"
           defaultValue={DEFAULT_DIM}
+          inputProps={{ min: 0 }}
           onChange={e => setWidth(parseInt(e.target.value))}
         />
         <div className={classes.crossSign}>×</div>
@@ -52,6 +53,7 @@ const ChooseDimenssionPage = ({ setBoardDim }: ChooseDimenssionPageProps) => {
           variant="filled"
           type="number"
           defaultValue={DEFAULT_DIM}
+          inputProps={{ min: 0 }}
           onChange={e => setHeight(parseInt(e.target.value))}
         />
       </div>
