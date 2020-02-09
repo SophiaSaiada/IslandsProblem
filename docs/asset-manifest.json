@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/IslandsProblem/static/css/main.7e05891e.chunk.css",
-    "main.js": "/IslandsProblem/static/js/main.e7bc4eb2.chunk.js",
-    "main.js.map": "/IslandsProblem/static/js/main.e7bc4eb2.chunk.js.map",
+    "main.js": "/IslandsProblem/static/js/main.5f10269a.chunk.js",
+    "main.js.map": "/IslandsProblem/static/js/main.5f10269a.chunk.js.map",
     "runtime-main.js": "/IslandsProblem/static/js/runtime-main.22bf6b9f.js",
     "runtime-main.js.map": "/IslandsProblem/static/js/runtime-main.22bf6b9f.js.map",
-    "static/js/2.cd14a78f.chunk.js": "/IslandsProblem/static/js/2.cd14a78f.chunk.js",
-    "static/js/2.cd14a78f.chunk.js.map": "/IslandsProblem/static/js/2.cd14a78f.chunk.js.map",
+    "static/js/2.d1f507a3.chunk.js": "/IslandsProblem/static/js/2.d1f507a3.chunk.js",
+    "static/js/2.d1f507a3.chunk.js.map": "/IslandsProblem/static/js/2.d1f507a3.chunk.js.map",
     "index.html": "/IslandsProblem/index.html",
-    "precache-manifest.2f6bcc301aa25d3f9b537722d81ca525.js": "/IslandsProblem/precache-manifest.2f6bcc301aa25d3f9b537722d81ca525.js",
+    "precache-manifest.9ebe990ee0af3bf6e2ed805141f5c029.js": "/IslandsProblem/precache-manifest.9ebe990ee0af3bf6e2ed805141f5c029.js",
     "service-worker.js": "/IslandsProblem/service-worker.js",
     "static/css/main.7e05891e.chunk.css.map": "/IslandsProblem/static/css/main.7e05891e.chunk.css.map",
-    "static/js/2.cd14a78f.chunk.js.LICENSE.txt": "/IslandsProblem/static/js/2.cd14a78f.chunk.js.LICENSE.txt",
+    "static/js/2.d1f507a3.chunk.js.LICENSE.txt": "/IslandsProblem/static/js/2.d1f507a3.chunk.js.LICENSE.txt",
     "static/media/stylesheet.css": "/IslandsProblem/static/media/jetbrainsmono-regular-webfont.2b149b81.woff2"
   },
   "entrypoints": [
     "static/js/runtime-main.22bf6b9f.js",
-    "static/js/2.cd14a78f.chunk.js",
+    "static/js/2.d1f507a3.chunk.js",
     "static/css/main.7e05891e.chunk.css",
-    "static/js/main.e7bc4eb2.chunk.js"
+    "static/js/main.5f10269a.chunk.js"
   ]
 }
