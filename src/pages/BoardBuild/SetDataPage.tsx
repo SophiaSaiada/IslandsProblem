@@ -33,7 +33,10 @@ const SetDataPage = ({ boardDim, setBoardData }: SetDataPageProps) => {
   const randomize = () => {
     setData(
       _.range(boardDim.height).map(__ =>
-        _.range(boardDim.width).map(__ => Math.round(Math.random()))
+        _.range(boardDim.width).map(__ =>
+          // make the probabilty for sea higher
+          Math.floor(Math.random() * 3) >= 1 ? 0 : 1
+        )
       )
     );
   };

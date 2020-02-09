@@ -1,9 +1,8 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 import { Board } from "../../types/Board";
-import lightBlue from "@material-ui/core/colors/lightBlue";
-import orange from "@material-ui/core/colors/orange";
 import { makeStyles, Paper } from "@material-ui/core";
 import { FixedSizeGrid as Grid } from "react-window";
+import _ from "lodash";
 
 type BoardVisualizerProps = {
   board: Board;
@@ -58,8 +57,38 @@ const innerElementType = forwardRef((props: any, ref: any) => {
 const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
   const classes = useStyles();
 
+  const [colors, setColors] = useState(["#b3e5fc", "#9a472d"]);
+
+  const generateColors = (endIndex: number) => {
+    const generatedColors = new Set<String>(colors);
+
+    const generateNewColor = () => {
+      const randomColor = () => {
+        const letters = "0123456789ABCDEF";
+        return _.range(0, 3).reduce(
+          (acc, _) =>
+            acc +
+            letters[Math.floor(Math.random() * 8)] +
+            letters[Math.floor(Math.random() * 16)],
+          "#"
+        );
+      };
+      let newColor = randomColor();
+      while (generatedColors.has(newColor)) newColor = randomColor();
+      generatedColors.add(newColor);
+      return newColor;
+    };
+
+    return colors.concat(
+      _.range(colors.length, endIndex + 1).map(_ => generateNewColor())
+    );
+  };
+
   const Cell = ({ columnIndex, rowIndex, style }: CellProps) => {
     const value = board.data[rowIndex][columnIndex];
+    if (value >= colors.length) {
+      setColors(generateColors(value));
+    }
     return (
       <div
         key={`${columnIndex},${rowIndex}`}
@@ -77,7 +106,8 @@ const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
         <Paper
           className={classes.islandPaper}
           style={{
-            backgroundColor: value === 0 ? lightBlue[200] : orange[200],
+            backgroundColor: colors[value],
+            color: value === 0 ? "#000" : "#fff",
             transition: "background-color .2s ease"
           }}
           elevation={2}

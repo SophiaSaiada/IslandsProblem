@@ -17,7 +17,7 @@ const SolverPage = ({ originalBoard, goHome }: SolverPageProps) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const solve = () => {
     const quickRun =
-      originalBoard.dimensions.height * originalBoard.dimensions.width > 800;
+      originalBoard.dimensions.height * originalBoard.dimensions.width > 20;
       
     const sleepLength =
       originalBoard.dimensions.height * originalBoard.dimensions.width > 400

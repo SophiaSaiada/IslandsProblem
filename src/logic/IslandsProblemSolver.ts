@@ -87,15 +87,17 @@ async function mergeIdenticalIslands(
   sideEffect: (board: Board) => void,
   sleep: () => Promise<any>
 ) {
-  let islandIdToIndices = Object.fromEntries(
-    _.range(2, lastIslandId + 1).map(islandId => [
-      islandId,
-      new Array<[number, number]>()
-    ])
+  let islandIdToIndices = [
+    new Array<[number, number]>(),
+    new Array<[number, number]>()
+  ].concat(
+    _.range(2, lastIslandId + 1).map(_ => new Array<[number, number]>())
   );
+
   board.forEachCell((rowIndex, columnIndex, currentValue) => {
-    if (currentValue > 1)
+    if (currentValue > 1) {
       islandIdToIndices[currentValue].push([rowIndex, columnIndex]);
+    }
   });
 
   await board.asyncForEachCell(async (rowIndex, columnIndex, currentValue) => {
@@ -108,20 +110,18 @@ async function mergeIdenticalIslands(
       ([neighborColumnIndex, neighborRowIndex]) =>
         board.getCell(neighborRowIndex, neighborColumnIndex)
     );
-    await identicalIslands
-      .filter(islandId => islandId !== currentValue)
-      .forEach(async islandId => {
-        await islandIdToIndices[islandId].forEach(
-          async ([rowIndex, columnIndex]) => {
-            islandIdToIndices[currentValue].push([rowIndex, columnIndex]);
-            board.setCell(rowIndex, columnIndex, currentValue);
-            if (!quickRun) {
-              sideEffect(board);
-              await sleep();
-            }
-          }
-        );
-      });
+    for await (const islandId of identicalIslands.filter(
+      islandId => islandId !== currentValue
+    )) {
+      for await (const [rowIndex, columnIndex] of islandIdToIndices[islandId]) {
+        islandIdToIndices[currentValue].push([rowIndex, columnIndex]);
+        board.setCell(rowIndex, columnIndex, currentValue);
+        if (!quickRun) {
+          sideEffect(board);
+          await sleep();
+        }
+      }
+    }
   });
 }
 

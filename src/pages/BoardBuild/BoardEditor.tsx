@@ -1,6 +1,4 @@
 import React, { forwardRef } from "react";
-import lightBlue from "@material-ui/core/colors/lightBlue";
-import orange from "@material-ui/core/colors/orange";
 import { makeStyles, ButtonBase, Paper } from "@material-ui/core";
 import { FixedSizeGrid as Grid } from "react-window";
 import { Dimensions } from "../../types/Dimensions";
@@ -78,7 +76,8 @@ const BoardEditor = ({ boardDim, data, toggleCell }: BoardEditorProps) => {
         <Paper
           className={classes.islandPaper}
           style={{
-            backgroundColor: value === 0 ? lightBlue[200] : orange[200],
+            backgroundColor: value === 0 ? "#b3e5fc" : "#9a472d",
+            color: value === 0 ? "#000" : "#fff",
             transition: "background-color .2s ease"
           }}
           elevation={2}
