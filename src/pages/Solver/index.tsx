@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Board } from "../../types/Board";
 import findNumOfIslands from "../../logic/IslandsProblemSolver";
 import { sleep } from "../../utils/sleep";
@@ -48,6 +48,13 @@ const SolverPage = ({
 
   const windowSize = useWindowSize();
 
+  const isMounted = useRef(true);
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  });
+
   const solve = () => {
     const quickRun =
       originalBoard.dimensions.height * originalBoard.dimensions.width > 1000;
@@ -64,11 +71,13 @@ const SolverPage = ({
     findNumOfIslands(
       originalBoard,
       (board: Board) => {
+        if (!isMounted.current) return;
         setOgnoingBoardAndId([board, (ongoingBoardId + 1) % 4]);
       },
       quickRun,
       () => sleep(sleepLength)
     ).then(answer => {
+      if (!isMounted.current) return;
       setAnswer(answer);
       setSnackbarOpen(true);
     });
