@@ -45,6 +45,7 @@ const SolverPage = ({
   >([originalBoard.clone(), 0]);
   const [answer, setAnswer] = useState<number | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [clickedSolve, setClickedSolve] = useState(false);
 
   const windowSize = useWindowSize();
 
@@ -56,6 +57,9 @@ const SolverPage = ({
   }, []);
 
   const solve = () => {
+    if (clickedSolve) return;
+    setClickedSolve(true);
+
     const quickRun =
       originalBoard.dimensions.height * originalBoard.dimensions.width > 1000;
 
@@ -145,7 +149,12 @@ const SolverPage = ({
         )}
 
         <Box component="span" ml={2}>
-          <Button variant="contained" color="primary" onClick={solve}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={solve}
+            disabled={clickedSolve}
+          >
             Solve
           </Button>
         </Box>
