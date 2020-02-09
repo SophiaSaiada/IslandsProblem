@@ -9,12 +9,27 @@ import customTheme from "./themes/custom";
 
 const App = () => {
   const [board, setBoard] = useState<Board | null>(null);
+  const [fullScreenMode, setFullScreenMode] = useState(false);
   return (
     <ThemeProvider theme={customTheme}>
       <div className={`App`}>
-        {board == null && <BoardBuildPage setBoard={setBoard} />}
+        {board == null && (
+          <BoardBuildPage
+            setBoard={setBoard}
+            fullScreenMode={fullScreenMode}
+            setFullScreenMode={setFullScreenMode}
+          />
+        )}
         {board != null && (
-          <SolverPage originalBoard={board} goHome={() => setBoard(null)} />
+          <SolverPage
+            originalBoard={board}
+            goHome={() => {
+              setBoard(null);
+              setFullScreenMode(false);
+            }}
+            fullScreenMode={fullScreenMode}
+            setFullScreenMode={setFullScreenMode}
+          />
         )}
       </div>
     </ThemeProvider>

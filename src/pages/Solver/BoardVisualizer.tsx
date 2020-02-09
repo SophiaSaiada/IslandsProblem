@@ -6,6 +6,9 @@ import _ from "lodash";
 
 type BoardVisualizerProps = {
   board: Board;
+  width: number;
+  height: number;
+  paddingBottom: number;
 };
 
 export const useStyles = makeStyles(_ => ({
@@ -36,25 +39,32 @@ type CellProps = {
   style: any;
 };
 
-const GUTTER_SIZE = 8;
+export const BOARD_GUTTER_SIZE = 8;
 
-const innerElementType = forwardRef((props: any, ref: any) => {
-  const { style, ...rest } = props;
+const innerElementType = (paddingBottom: number) =>
+  forwardRef((props: any, ref: any) => {
+    const { style, ...rest } = props;
 
-  return (
-    <div
-      ref={ref}
-      style={{
-        ...style,
-        paddingLeft: GUTTER_SIZE,
-        paddingTop: GUTTER_SIZE
-      }}
-      {...rest}
-    />
-  );
-});
+    return (
+      <div
+        ref={ref}
+        style={{
+          ...style,
+          paddingLeft: BOARD_GUTTER_SIZE,
+          paddingTop: BOARD_GUTTER_SIZE,
+          height: `${parseFloat(style.height) + paddingBottom}px`
+        }}
+        {...rest}
+      />
+    );
+  });
 
-const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
+const BoardVisualizer = ({
+  board,
+  width,
+  height,
+  paddingBottom
+}: BoardVisualizerProps) => {
   const classes = useStyles();
 
   const [colors, setColors] = useState(["#b3e5fc", "#9a472d"]);
@@ -95,10 +105,10 @@ const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
         className={classes.islandPaperContainer}
         style={{
           ...style,
-          left: style.left + GUTTER_SIZE,
-          top: style.top + GUTTER_SIZE,
-          width: style.width - GUTTER_SIZE,
-          height: style.height - GUTTER_SIZE,
+          left: style.left + BOARD_GUTTER_SIZE,
+          top: style.top + BOARD_GUTTER_SIZE,
+          width: style.width - BOARD_GUTTER_SIZE,
+          height: style.height - BOARD_GUTTER_SIZE,
           padding: 0,
           margin: 0
         }}
@@ -123,17 +133,11 @@ const BoardVisualizer = ({ board }: BoardVisualizerProps) => {
       <Grid
         columnCount={board.dimensions.width}
         rowCount={board.dimensions.height}
-        columnWidth={32 + GUTTER_SIZE * 2}
-        rowHeight={32 + GUTTER_SIZE * 2}
-        height={Math.min(
-          board.dimensions.height * (32 + GUTTER_SIZE * 2) + 20,
-          400
-        )}
-        width={Math.min(
-          board.dimensions.width * (32 + GUTTER_SIZE * 2) + 20,
-          400
-        )}
-        innerElementType={innerElementType}
+        columnWidth={32 + BOARD_GUTTER_SIZE * 2}
+        rowHeight={32 + BOARD_GUTTER_SIZE * 2}
+        height={height}
+        width={width}
+        innerElementType={innerElementType(paddingBottom)}
       >
         {Cell}
       </Grid>

@@ -5,10 +5,16 @@ import { Dimensions } from "../../types/Dimensions";
 import { Board } from "../../types/Board";
 
 type BoardBuildPageProps = {
-  setBoard: (board: Board) => void;
+  setBoard: (board: Board | null) => void;
+  fullScreenMode: boolean;
+  setFullScreenMode: (fullScreenMode: boolean) => void;
 };
 
-const BoardBuildPage = ({ setBoard }: BoardBuildPageProps) => {
+const BoardBuildPage = ({
+  setBoard,
+  fullScreenMode,
+  setFullScreenMode
+}: BoardBuildPageProps) => {
   const [dimensions, setDimensions] = useState<Dimensions | null>(null);
 
   const setBoardDataAndSubmit = (newData: number[][]) => {
@@ -26,6 +32,12 @@ const BoardBuildPage = ({ setBoard }: BoardBuildPageProps) => {
         <SetDataPage
           boardDim={dimensions}
           setBoardData={setBoardDataAndSubmit}
+          goHome={() => {
+            setDimensions(null);
+            setFullScreenMode(false);
+          }}
+          fullScreenMode={fullScreenMode}
+          setFullScreenMode={setFullScreenMode}
         />
       )}
     </div>

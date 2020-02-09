@@ -7,6 +7,9 @@ type BoardEditorProps = {
   boardDim: Dimensions;
   data: number[][];
   toggleCell: (rowIndex: number, clomunIndex: number) => void;
+  width: number;
+  height: number;
+  paddingBottom: number;
 };
 
 export const useStyles = makeStyles(_ => ({
@@ -37,24 +40,34 @@ type CellProps = {
   style: any;
 };
 
-const GUTTER_SIZE = 8;
+export const BOARD_GUTTER_SIZE = 8;
 
-const innerElementType = forwardRef((props: any, ref: any) => {
-  const { style, ...rest } = props;
+const innerElementType = (paddingBottom: number) =>
+  forwardRef((props: any, ref: any) => {
+    const { style, ...rest } = props;
 
-  return (
-    <div
-      ref={ref}
-      style={{
-        ...style,
-        paddingLeft: GUTTER_SIZE,
-        paddingTop: GUTTER_SIZE
-      }}
-      {...rest}
-    />
-  );
-});
-const BoardEditor = ({ boardDim, data, toggleCell }: BoardEditorProps) => {
+    return (
+      <div
+        ref={ref}
+        style={{
+          ...style,
+          paddingLeft: BOARD_GUTTER_SIZE,
+          paddingTop: BOARD_GUTTER_SIZE,
+          height: `${parseFloat(style.height) + paddingBottom}px`
+        }}
+        {...rest}
+      />
+    );
+  });
+
+const BoardEditor = ({
+  boardDim,
+  data,
+  toggleCell,
+  width,
+  height,
+  paddingBottom
+}: BoardEditorProps) => {
   const classes = useStyles();
 
   const Cell = ({ columnIndex, rowIndex, style }: CellProps) => {
@@ -67,10 +80,10 @@ const BoardEditor = ({ boardDim, data, toggleCell }: BoardEditorProps) => {
         onClick={_ => toggleCell(rowIndex, columnIndex)}
         style={{
           ...style,
-          left: style.left + GUTTER_SIZE,
-          top: style.top + GUTTER_SIZE,
-          width: style.width - GUTTER_SIZE,
-          height: style.height - GUTTER_SIZE
+          left: style.left + BOARD_GUTTER_SIZE,
+          top: style.top + BOARD_GUTTER_SIZE,
+          width: style.width - BOARD_GUTTER_SIZE,
+          height: style.height - BOARD_GUTTER_SIZE
         }}
       >
         <Paper
@@ -93,11 +106,11 @@ const BoardEditor = ({ boardDim, data, toggleCell }: BoardEditorProps) => {
       <Grid
         columnCount={boardDim.width}
         rowCount={boardDim.height}
-        columnWidth={32 + GUTTER_SIZE * 2}
-        rowHeight={32 + GUTTER_SIZE * 2}
-        height={Math.min(boardDim.height * (32 + GUTTER_SIZE * 2) + 20, 400)}
-        width={Math.min(boardDim.width * (32 + GUTTER_SIZE * 2) + 20, 400)}
-        innerElementType={innerElementType}
+        columnWidth={32 + BOARD_GUTTER_SIZE * 2}
+        rowHeight={32 + BOARD_GUTTER_SIZE * 2}
+        height={height}
+        width={width}
+        innerElementType={innerElementType(paddingBottom)}
       >
         {Cell}
       </Grid>

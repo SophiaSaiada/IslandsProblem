@@ -2,30 +2,63 @@ import React, { useState } from "react";
 import { Board } from "../../types/Board";
 import findNumOfIslands from "../../logic/IslandsProblemSolver";
 import { sleep } from "../../utils/sleep";
-import BoardVisualizer from "./BoardVisualizer";
-import { Box, Button, Snackbar } from "@material-ui/core";
+import BoardVisualizer, { BOARD_GUTTER_SIZE } from "./BoardVisualizer";
+import {
+  Box,
+  Button,
+  Snackbar,
+  makeStyles,
+  IconButton
+} from "@material-ui/core";
+import useWindowSize from "../../utils/windowSizeHook";
+import { FullscreenExit, Fullscreen, Home } from "@material-ui/icons";
+
 type SolverPageProps = {
   originalBoard: Board;
   goHome: () => void;
+  fullScreenMode: boolean;
+  setFullScreenMode: (fullScreenMode: boolean) => void;
 };
 
-const SolverPage = ({ originalBoard, goHome }: SolverPageProps) => {
+const useStyles = makeStyles(_ => ({
+  controllersConatiner: {
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    backdropFilter: "blur(7px)",
+    backgroundColor: "rgba(255, 255, 255, .5)",
+    padding: "10px 0"
+  }
+}));
+
+const SolverPage = ({
+  originalBoard,
+  goHome,
+  fullScreenMode,
+  setFullScreenMode
+}: SolverPageProps) => {
+  const classes = useStyles();
+
   const [[ongoingBoard, ongoingBoardId], setOgnoingBoardAndId] = useState<
     [Board, number]
   >([originalBoard.clone(), 0]);
   const [answer, setAnswer] = useState<number | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const windowSize = useWindowSize();
+
   const solve = () => {
     const quickRun =
-      originalBoard.dimensions.height * originalBoard.dimensions.width > 20;
-      
+      originalBoard.dimensions.height * originalBoard.dimensions.width > 1000;
+
     const sleepLength =
       originalBoard.dimensions.height * originalBoard.dimensions.width > 400
-        ? 10
+        ? 1
         : originalBoard.dimensions.height * originalBoard.dimensions.width > 200
-        ? 20
+        ? 5
         : originalBoard.dimensions.height * originalBoard.dimensions.width > 100
-        ? 40
+        ? 10
         : 100;
 
     findNumOfIslands(
@@ -51,18 +84,62 @@ const SolverPage = ({ originalBoard, goHome }: SolverPageProps) => {
   return (
     <div>
       <Box mb={2}>
-        <BoardVisualizer board={ongoingBoard} />
+        <BoardVisualizer
+          board={ongoingBoard}
+          width={
+            fullScreenMode
+              ? windowSize.width
+              : Math.min(
+                  originalBoard.dimensions.width *
+                    (32 + BOARD_GUTTER_SIZE * 2) +
+                    20,
+                  400
+                )
+          }
+          height={
+            fullScreenMode
+              ? windowSize.height
+              : Math.min(
+                  originalBoard.dimensions.height *
+                    (32 + BOARD_GUTTER_SIZE * 2) +
+                    20,
+                  400
+                )
+          }
+          paddingBottom={fullScreenMode ? 80 : 0}
+        />
       </Box>
 
-      <Box component="span" mt={2}>
-        <Button variant="contained" onClick={goHome}>
-          Go Home
-        </Button>
-      </Box>
-      <Box component="span" mt={2} ml={2}>
-        <Button variant="contained" color="primary" onClick={solve}>
-          Solve
-        </Button>
+      <Box
+        mt={2}
+        className={fullScreenMode ? classes.controllersConatiner : ""}
+      >
+        <Box component="span">
+          <IconButton
+            color={fullScreenMode ? "inherit" : "primary"}
+            onClick={goHome}
+          >
+            <Home />
+          </IconButton>
+        </Box>
+
+        {(originalBoard.dimensions.width > 8 ||
+          originalBoard.dimensions.height > 8) && (
+          <Box component="span">
+            <IconButton
+              color={fullScreenMode ? "inherit" : "primary"}
+              onClick={_ => setFullScreenMode(!fullScreenMode)}
+            >
+              {fullScreenMode ? <FullscreenExit /> : <Fullscreen />}
+            </IconButton>
+          </Box>
+        )}
+
+        <Box component="span" ml={2}>
+          <Button variant="contained" color="primary" onClick={solve}>
+            Solve
+          </Button>
+        </Box>
       </Box>
 
       <Snackbar
