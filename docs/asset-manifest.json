@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/IslandsProblem/static/css/main.7e05891e.chunk.css",
-    "main.js": "/IslandsProblem/static/js/main.cb0862da.chunk.js",
-    "main.js.map": "/IslandsProblem/static/js/main.cb0862da.chunk.js.map",
+    "main.js": "/IslandsProblem/static/js/main.a60adb82.chunk.js",
+    "main.js.map": "/IslandsProblem/static/js/main.a60adb82.chunk.js.map",
     "runtime-main.js": "/IslandsProblem/static/js/runtime-main.22bf6b9f.js",
     "runtime-main.js.map": "/IslandsProblem/static/js/runtime-main.22bf6b9f.js.map",
     "static/js/2.d1f507a3.chunk.js": "/IslandsProblem/static/js/2.d1f507a3.chunk.js",
     "static/js/2.d1f507a3.chunk.js.map": "/IslandsProblem/static/js/2.d1f507a3.chunk.js.map",
     "index.html": "/IslandsProblem/index.html",
-    "precache-manifest.8ffd277c1d451fbf2316919ec203c7b8.js": "/IslandsProblem/precache-manifest.8ffd277c1d451fbf2316919ec203c7b8.js",
+    "precache-manifest.006226c6494429251e84318db997a65d.js": "/IslandsProblem/precache-manifest.006226c6494429251e84318db997a65d.js",
     "service-worker.js": "/IslandsProblem/service-worker.js",
     "static/css/main.7e05891e.chunk.css.map": "/IslandsProblem/static/css/main.7e05891e.chunk.css.map",
     "static/js/2.d1f507a3.chunk.js.LICENSE.txt": "/IslandsProblem/static/js/2.d1f507a3.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.22bf6b9f.js",
     "static/js/2.d1f507a3.chunk.js",
     "static/css/main.7e05891e.chunk.css",
-    "static/js/main.cb0862da.chunk.js"
+    "static/js/main.a60adb82.chunk.js"
   ]
 }
