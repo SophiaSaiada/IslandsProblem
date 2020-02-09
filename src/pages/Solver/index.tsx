@@ -53,7 +53,7 @@ const SolverPage = ({
     return () => {
       isMounted.current = false;
     };
-  });
+  }, []);
 
   const solve = () => {
     const quickRun =
