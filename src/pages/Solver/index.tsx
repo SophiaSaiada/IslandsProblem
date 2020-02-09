@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Board } from "../../types/Board";
 import findNumOfIslands from "../../logic/IslandsProblemSolver";
-import { sleep } from "../../logic/utils";
+import { sleep } from "../../utils/sleep";
 import BoardVisualizer from "./BoardVisualizer";
 import { Box, Button, Snackbar } from "@material-ui/core";
 type SolverPageProps = {
