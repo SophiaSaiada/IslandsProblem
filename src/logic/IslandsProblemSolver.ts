@@ -17,42 +17,47 @@ async function findNumOfIslands(
 
     if (!quickRun) await sleep();
 
+    const nonZeroNeighbors = getNonZeroNeighbors(board, rowIndex, columnIndex);
     if (currentValue === 1) {
-      const nonZeroNeighbors = getNonZeroNeighbors(
-        board,
-        rowIndex,
-        columnIndex
-      );
-
       const visitedNonZeroNeighbors = nonZeroNeighbors.filter(
-        ([neighborColumnIndex, neighborRowIndex]) =>
+        ([neighborRowIndex, neighborColumnIndex]) =>
           board.getCell(neighborRowIndex, neighborColumnIndex) > 1
       );
-      if (visitedNonZeroNeighbors.length === 0) {
-        board.setCell(rowIndex, columnIndex, nextIslandId);
-        await nonZeroNeighbors.forEach(
-          async ([neighborColumnIndex, neighborRowIndex]) => {
-            board.setCell(neighborRowIndex, neighborColumnIndex, nextIslandId);
-            if (!quickRun) {
-              sideEffect(board);
-              await sleep();
-            }
-          }
-        );
-        nextIslandId++;
+
+      const currentIslandId =
+        visitedNonZeroNeighbors.length === 0
+          ? nextIslandId++
+          : Math.min(
+              ...visitedNonZeroNeighbors.map(
+                ([neighborRowIndex, neighborColumnIndex]) =>
+                  board.getCell(neighborRowIndex, neighborColumnIndex)
+              )
+            );
+
+      board.setCell(rowIndex, columnIndex, currentIslandId);
+      for await (const [
+        neighborRowIndex,
+        neighborColumnIndex
+      ] of nonZeroNeighbors) {
+        board.setCell(neighborRowIndex, neighborColumnIndex, currentIslandId);
+        if (!quickRun) {
+          sideEffect(board);
+          await sleep();
+        }
       }
     }
 
     if (currentValue > 1) {
-      await getNonZeroNeighbors(board, rowIndex, columnIndex).forEach(
-        async ([neighborColumnIndex, neighborRowIndex]) => {
-          board.setCell(neighborRowIndex, neighborColumnIndex, currentValue);
-          if (!quickRun) {
-            sideEffect(board);
-            await sleep();
-          }
+      for await (const [
+        neighborRowIndex,
+        neighborColumnIndex
+      ] of nonZeroNeighbors) {
+        board.setCell(neighborRowIndex, neighborColumnIndex, currentValue);
+        if (!quickRun) {
+          sideEffect(board);
+          await sleep();
         }
-      );
+      }
     }
   });
 
@@ -107,7 +112,7 @@ async function mergeIdenticalIslands(
     // currentValue can't be 1, as we replaced each 1 with an island ID, that start in 2.
     const nonZeroNeighbors = getNonZeroNeighbors(board, rowIndex, columnIndex);
     const identicalIslands = nonZeroNeighbors.map(
-      ([neighborColumnIndex, neighborRowIndex]) =>
+      ([neighborRowIndex, neighborColumnIndex]) =>
         board.getCell(neighborRowIndex, neighborColumnIndex)
     );
     for await (const islandId of identicalIslands.filter(
@@ -131,15 +136,22 @@ const getNeighborIndices = (
   columnIndex: number
 ) => {
   const neighborIndices = _.range(-1, 2)
-    .flatMap(yOffset => _.range(-1, 2).map(xOffset => [xOffset, yOffset]))
-    .filter(([x, y]) => x !== 0 || y !== 0)
-    .map(([x, y]) => [columnIndex + x, rowIndex + y])
+    .flatMap(rowOffset =>
+      _.range(-1, 2).map(columnOffset => [rowOffset, columnOffset])
+    )
     .filter(
-      ([x, y]) =>
-        0 <= x &&
-        x < board.dimensions.width &&
-        0 <= y &&
-        y < board.dimensions.height
+      ([rowOffset, columnOffset]) => columnOffset !== 0 || rowOffset !== 0
+    )
+    .map(([rowOffset, columnOffset]) => [
+      rowIndex + rowOffset,
+      columnIndex + columnOffset
+    ])
+    .filter(
+      ([rowOffset, columnOffset]) =>
+        0 <= columnOffset &&
+        columnOffset < board.dimensions.width &&
+        0 <= rowOffset &&
+        rowOffset < board.dimensions.height
     );
 
   return neighborIndices;
@@ -152,7 +164,7 @@ const getNonZeroNeighbors = (
 ) => {
   const neighborIndices = getNeighborIndices(board, rowIndex, columnIndex);
   return neighborIndices.filter(
-    ([neighborColumnIndex, neighborRowIndex]) =>
+    ([neighborRowIndex, neighborColumnIndex]) =>
       board.getCell(neighborRowIndex, neighborColumnIndex) > 0
   );
 };

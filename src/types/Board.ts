@@ -70,7 +70,11 @@ export class Board {
   }
 
   async asyncForEachCell(
-    callback: (rowIndex: number, columnIndex: number, value: number) => void
+    callback: (
+      rowIndex: number,
+      columnIndex: number,
+      value: number
+    ) => Promise<void>
   ) {
     for (let rowIndex = 0; rowIndex < this.dimensions.height; rowIndex++) {
       for (
@@ -78,11 +82,7 @@ export class Board {
         columnIndex < this.dimensions.width;
         columnIndex++
       ) {
-        await callback(
-          rowIndex,
-          columnIndex,
-          this.getCell(rowIndex, columnIndex)
-        );
+        await callback(rowIndex, columnIndex, this.data[rowIndex][columnIndex]);
       }
     }
   }
